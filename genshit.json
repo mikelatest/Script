@@ -1,0 +1,7 @@
+{
+    "name": "SteamTools论坛签到",
+    "description": "SteamTools 论坛每日自动签到脚本",
+    "task": [
+        "0 9 * * * https://raw.githubusercontent.com/mikelatest/Script/refs/heads/main/st_signin.js, tag=SteamTools签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/steam.png, enabled=true"
+    ]
+}
