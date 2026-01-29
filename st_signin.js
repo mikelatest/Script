@@ -179,6 +179,8 @@ async function signin() {
         // Step 5: 提交签到
         console.log('[签到] Step 5: 提交签到...');
 
+        const postBody = `formhash=${formhash}&signtoken=${signtoken}&emotid=${randomMood}&referer=${encodeURIComponent(config.homeUrl)}`;
+
         const signinOptions = {
             url: config.signinUrl,
             method: 'POST',
