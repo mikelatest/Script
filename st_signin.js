@@ -147,7 +147,7 @@ async function signin() {
         const pageBody = signinPageResponse.body;
         
         // 检查是否已经签到
-        if (pageBody.includes('已经签到') || pageBody.includes('今日已签')) {
+        if (pageBody.includes('已经签过')) {
             console.log('[签到] ℹ️ 今日已签到');
             $notify('SteamTools签到', 'ℹ️ 今日已签到', '明天再来吧~');
             $done();
@@ -160,6 +160,7 @@ async function signin() {
         const signtoken = pageBody.match(/name="signtoken"\s+value="([^"]+)"/);
         
         if (!formhash) {
+            $notify('SteamTools签到', '未找到formhash参数');
             throw new Error('未找到formhash参数');
         }
         
