@@ -122,7 +122,8 @@ async function signin() {
         }
 
         if (!homeResponse || !homeResponse.body) {
-            throw new Error('访问首页失败');
+            $notify('SteamTools签到', '访问首页失败');
+            $done();
         }
         
         console.log('[签到] ✓ 登录状态有效');
@@ -167,7 +168,7 @@ async function signin() {
         
         if (!formhash) {
             $notify('SteamTools签到', '未找到formhash参数');
-            throw new Error('未找到formhash参数');
+            $done();
         }
         
         console.log(`[签到] formhash: ${formhash}`);
@@ -212,21 +213,21 @@ async function signin() {
             
             console.log('[签到] ✅ 签到成功!');
             $notify('SteamTools签到', '✅ 签到成功', rewardInfo);
-            return;
+            $done();
         } else if (result.includes('已经签过')) {
             console.log('[签到] ℹ️ 今日已签到');
             $notify('SteamTools签到', 'ℹ️ 今日已签到', '');
-            return;
+            $done();
         } else {
             console.log('[签到] ⚠️ 签到状态不明确');
             $notify('SteamTools签到', '⚠️ 状态不明', '请手动检查');
-            return;
+            $done();
         }
         
     } catch (error) {
         console.log(`[签到] ❌ 错误: ${error.message}`);
         $notify('SteamTools签到', '❌ 签到失败', String(error.message || error));
-        return;
+        $done();
     }
 }
 
