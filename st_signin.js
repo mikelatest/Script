@@ -130,8 +130,10 @@ async function signin() {
         // Step 2: 访问签到页面
         console.log('[签到] Step 2: 访问签到页面...');
 
+        LOGIN_PAGE_URL = "https://bbs.steamtools.net/member.php?mod=logging&action=login"
+
         const signinPageOptions = {
-            url: config.signinUrl,
+            url: LOGIN_PAGE_URL,
             headers: {
                 'Cookie': cookie,
                 'User-Agent': userAgent,
