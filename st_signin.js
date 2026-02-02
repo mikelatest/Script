@@ -20,7 +20,7 @@ const userAgentKey = 'steamtools_ua';
 const config = {
     baseUrl: 'https://bbs.steamtools.net',
     loginUrl: 'https://bbs.steamtools.net/member.php?mod=logging&action=login',
-    signinUrl: 'https://bbs.steamtools.net/plugin.php?id=dc_signin:sign',
+    signinUrl: 'https://bbs.steamtools.net/plugin.php?id=dc_signin:sign&inajax=1',
     homeUrl: 'https://bbs.steamtools.net/',
 };
 
@@ -113,16 +113,16 @@ async function signin() {
         
         const homeResponse = await httpRequest(homeOptions);
         
-        if (!homeResponse || !homeResponse.body) {
-            throw new Error('访问首页失败');
-        }
-        
         // 检查是否已登录
         if (homeResponse.body.includes('登录') && !homeResponse.body.includes('退出')) {
             console.log('[签到] ❌ Cookie已失效');
             $notify('SteamTools签到', '❌ Cookie已失效', '请重新获取Cookie');
             $done();
             return;
+        }
+
+        if (!homeResponse || !homeResponse.body) {
+            throw new Error('访问首页失败');
         }
         
         console.log('[签到] ✓ 登录状态有效');
@@ -179,18 +179,34 @@ async function signin() {
         // Step 5: 提交签到
         console.log('[签到] Step 5: 提交签到...');
 
-        const postBody = `formhash=${formhash}&signtoken=${signtoken}&emotid=${randomMood}&referer=${encodeURIComponent(config.homeUrl)}`;
+        const headers = {
+            'Sec-Fetch-Dest' : `iframe`,
+            'Connection' : `keep-alive`,
+            'Accept-Encoding' : `gzip, deflate, br`,
+            'Content-Type' : `application/x-www-form-urlencoded`,
+            'Sec-Fetch-Site' : `same-origin`,
+            'Origin' : `https://bbs.steamtools.net`,
+            'User-Agent' : `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/144 Version/11.1.1 Safari/605.1.15`,
+            'Sec-Fetch-Mode' : `navigate`,
+            'Cookie' : cookie,
+            'Host' : `bbs.steamtools.net`,
+            'Referer' : `https://bbs.steamtools.net/index.php?mobile=no`,
+            'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
+            'Accept' : `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`
+        };
+
+        const postBody = `
+            formhash=${formhash}&
+            signsubmit=yes&
+            handlekey=signin&
+            emotid=3&
+            referer=https%3A%2F%2Fbbs.steamtools.net%2Findex.php%3Fmobile%3Dno&
+            content=%E4%B8%BA%E4%BA%86%E7%BB%B4%E6%8A%A4%E5%AE%87%E5%AE%99%E5%92%8C%E5%B9%B3%EF%BC%8C%E6%89%93%E8%B5%B7%E7%B2%BE%E7%A5%9E%E6%9D%A5%EF%BC%81%7E%7E`;
 
         const signinOptions = {
             url: config.signinUrl,
             method: 'POST',
-            headers: {
-                'Cookie': cookie,
-                'User-Agent': userAgent,
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Referer': config.signinUrl,
-                'X-Requested-With': 'XMLHttpRequest'
-            },
+            headers: headers,
             body: postBody
         };
         
@@ -201,7 +217,7 @@ async function signin() {
         }
         
         const result = signinResponse.body;
-        console.log(`[签到结果] ${result.substring(0, 200)}`);
+        console.log(`[签到结果] ${result}`);
         
         // Step 6: 解析签到结果
         if (result.includes('签到成功') || result.includes('恭喜')) {
