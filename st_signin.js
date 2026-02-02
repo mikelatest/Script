@@ -132,15 +132,25 @@ async function signin() {
 
         LOGIN_PAGE_URL = "https://bbs.steamtools.net/member.php?mod=logging&action=login"
 
+        const headers = {
+            'Sec-Fetch-Dest' : `iframe`,
+            'Connection' : `keep-alive`,
+            'Accept-Encoding' : `gzip, deflate, br`,
+            'Content-Type' : `application/x-www-form-urlencoded`,
+            'Sec-Fetch-Site' : `same-origin`,
+            'Origin' : `https://bbs.steamtools.net`,
+            'User-Agent' : `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/144 Version/11.1.1 Safari/605.1.15`,
+            'Sec-Fetch-Mode' : `navigate`,
+            'Cookie' : cookie,
+            'Host' : `bbs.steamtools.net`,
+            'Referer' : `https://bbs.steamtools.net/index.php?mobile=no`,
+            'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
+            'Accept' : `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`
+        };
+
         const signinPageOptions = {
             url: LOGIN_PAGE_URL,
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
-                "Accept": "application/json, text/javascript, */*; q=0.01",
-                "Accept-Language": "zh-CN,zh;q=0.9",
-                "X-Requested-With": "XMLHttpRequest",
-                "Referer": baseUrl,
-            }
+            headers: headers
         };
 
         const signinPageResponse = await httpRequest(signinPageOptions);
@@ -185,21 +195,7 @@ async function signin() {
         // Step 5: 提交签到
         console.log('[签到] Step 5: 提交签到...');
 
-        const headers = {
-            'Sec-Fetch-Dest' : `iframe`,
-            'Connection' : `keep-alive`,
-            'Accept-Encoding' : `gzip, deflate, br`,
-            'Content-Type' : `application/x-www-form-urlencoded`,
-            'Sec-Fetch-Site' : `same-origin`,
-            'Origin' : `https://bbs.steamtools.net`,
-            'User-Agent' : `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/144 Version/11.1.1 Safari/605.1.15`,
-            'Sec-Fetch-Mode' : `navigate`,
-            'Cookie' : cookie,
-            'Host' : `bbs.steamtools.net`,
-            'Referer' : `https://bbs.steamtools.net/index.php?mobile=no`,
-            'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
-            'Accept' : `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`
-        };
+
 
         const postBody = `
             formhash=${formhash}&
