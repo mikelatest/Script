@@ -182,20 +182,18 @@ async function signin() {
         console.log(`[签到] formhash: ${formhash}`);
         console.log(`[签到] signtoken: ${signtoken || '无'}`);
         
-        // Step 4: 随机选择心情
-        const moods = ['1', '2', '3', '4', '5', '6', '7', '8'];
-        const randomMood = moods[Math.floor(Math.random() * moods.length)];
-        const moodNames = {
-            '1': '开心', '2': '难过', '3': '郁闷', 
-            '4': '无聊', '5': '怒', '6': '擦汗',
-            '7': '奋斗', '8': '慵懒'
-        };
-        console.log(`[签到] Step 4: 选择心情: ${moodNames[randomMood] || randomMood}`);
+        // // Step 4: 随机选择心情
+        // const moods = ['1', '2', '3', '4', '5', '6', '7', '8'];
+        // const randomMood = moods[Math.floor(Math.random() * moods.length)];
+        // const moodNames = {
+        //     '1': '开心', '2': '难过', '3': '郁闷', 
+        //     '4': '无聊', '5': '怒', '6': '擦汗',
+        //     '7': '奋斗', '8': '慵懒'
+        // };
+        // console.log(`[签到] Step 4: 选择心情: ${moodNames[randomMood] || randomMood}`);
         
-        // Step 5: 提交签到
-        console.log('[签到] Step 5: 提交签到...');
-
-
+        // // Step 5: 提交签到
+        // console.log('[签到] Step 5: 提交签到...');
 
         const postBody = `
             formhash=${formhash}&
@@ -209,7 +207,7 @@ async function signin() {
             url: config.signinUrl,
             method: 'POST',
             headers: headers,
-            body: postBody
+            body: postBody,
         };
         
         const signinResponse = await httpRequest(signinOptions);
@@ -243,11 +241,13 @@ async function signin() {
         } else {
             console.log('[签到] ⚠️ 签到状态不明确');
             $notify('SteamTools签到', '⚠️ 状态不明', '请手动检查');
+            return;
         }
         
     } catch (error) {
         console.log(`[签到] ❌ 错误: ${error.message}`);
         $notify('SteamTools签到', '❌ 签到失败', String(error.message || error));
+        return;
     }
 }
 
