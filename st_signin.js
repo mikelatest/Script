@@ -135,8 +135,11 @@ async function signin() {
         const signinPageOptions = {
             url: LOGIN_PAGE_URL,
             headers: {
-                'Cookie': cookie,
-                'User-Agent': userAgent,
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0",
+                "Accept": "application/json, text/javascript, */*; q=0.01",
+                "Accept-Language": "zh-CN,zh;q=0.9",
+                "X-Requested-With": "XMLHttpRequest",
+                "Referer": baseUrl,
             }
         };
 
