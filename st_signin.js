@@ -20,7 +20,9 @@ const userAgentKey = 'steamtools_ua';
 const config = {
     baseUrl: 'https://bbs.steamtools.net',
     loginUrl: 'https://bbs.steamtools.net/member.php?mod=logging&action=login',
+    signinpreUrl: 'https://bbs.steamtools.net/plugin.php?id=dc_signin:sign&infloat=yes&handlekey=sign&inajax=1&ajaxtarget=fwin_content_sign',
     signinUrl: 'https://bbs.steamtools.net/plugin.php?id=dc_signin:sign&inajax=1',
+
     homeUrl: 'https://bbs.steamtools.net/',
 };
 
@@ -155,6 +157,19 @@ async function signin() {
         };
 
         const signinPageResponse = await httpRequest(signinPageOptions);
+        
+        if (!signinPageResponse || !signinPageResponse.body) {
+            throw new Error('访问签到页面失败');
+        }
+
+        const signinPreOptions = {
+            url: signinPreOptions,
+            headers: headers
+        };
+
+        const signinPreResponse = await httpRequest(signinPreOptions);
+        console.log(signinPreResponse)
+
         
         if (!signinPageResponse || !signinPageResponse.body) {
             throw new Error('访问签到页面失败');
